@@ -63,7 +63,7 @@ paths:
                   userId:
                     type: number
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
 
         '400':
           description: Invalid input
@@ -117,7 +117,7 @@ paths:
                   jwtToken:
                     type: string
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
 
         '400':
           description: Such a user does not exist
@@ -162,7 +162,7 @@ paths:
                   imageId:
                     type: number
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -240,7 +240,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/ImageArray'
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
                   totalImages:
                     type: integer
                   totalNeededImages:
@@ -305,7 +305,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/Image'
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -406,7 +406,7 @@ paths:
                   message:
                     type: string
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -470,7 +470,7 @@ paths:
                   message:
                     type: string
                   links:
-                    type: object
+                    $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -541,8 +541,8 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/UserArray'
-                  userLinks:
-                    type: object
+                  links:
+                      $ref: '#/components/schemas/HATEOASLinkArray'
                   totalUsers:
                     type: integer
                   totalNeededUsers:
@@ -590,7 +590,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/User'
                   links:
-                    type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '400':
@@ -649,8 +649,8 @@ paths:
                 properties:
                   message:
                     type: string
-                  userLinks:
-                    type: object
+                  links:
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -711,8 +711,8 @@ paths:
                 properties:
                   message:
                     type: string
-                  userLinks:
-                    type: object
+                  links:
+                      $ref: '#/components/schemas/HATEOASLinkArray'
         '400':
           description: Invalid input
         '401':
@@ -810,7 +810,7 @@ paths:
                         - destroyTime
                         - imagesUploaded
                     links:
-                      type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
           '401':
             $ref: '#/components/responses/UnauthorizedError'
           '404':
@@ -834,7 +834,7 @@ paths:
                     message:
                       type: string
                     links:
-                      type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
           '400':
             description: Invalid input
           '401':
@@ -862,7 +862,7 @@ paths:
                     message:
                       type: string
                     links:
-                      type: object
+                      $ref: '#/components/schemas/HATEOASLinkArray'
           '401':
             $ref: '#/components/responses/UnauthorizedError'
           '500':
@@ -934,6 +934,26 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Image'
+    HATEOASLink:
+      type: object
+      properties:
+        rel:
+          type: string
+        method:
+          type: string
+        href:
+          type: string
+        description:
+          type: boolean
+    HATEOASLinkArray:
+        description: Array of HATEOAS links
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/HATEOASLink'
+
   responses:
       UnauthorizedError:
         description: Token not provided or invalid
