@@ -127,6 +127,8 @@ paths:
           description: Error during logging in
   /images:
     post:
+      security:
+        - jwt_auth: []  
       tags:
         - images
       summary: Upload an image
@@ -170,6 +172,8 @@ paths:
         '500':
           description: Failed to upload
     get:
+      security:
+        - jwt_auth: []  
       tags:
         - images
       summary: Retrieve a batch of images
@@ -254,6 +258,8 @@ paths:
         '500':
           description: Failed to fetch images
     delete:
+      security:
+        - jwt_auth: []  
       tags:
         - images
       summary: Delete all your images
@@ -280,6 +286,8 @@ paths:
 
   /images/{imageId}:
     get:
+      security:
+        - jwt_auth: []   
       tags:
         - images
       summary: Retrieve image by ID
@@ -317,6 +325,8 @@ paths:
         '500':
           description: Failed to fetch image
     delete:
+      security:
+        - jwt_auth: []   
       tags:
         - images
       summary: Delete image by ID
@@ -351,6 +361,8 @@ paths:
         '500':
           description: Failed to delete the image
     patch:
+      security:
+        - jwt_auth: []   
       tags:
         - images
       summary: Partially update image
@@ -418,6 +430,8 @@ paths:
         '500':
           description: Failed to update the image
     put:
+      security:
+        - jwt_auth: []  
       tags:
         - images
       summary: Update an image
@@ -484,6 +498,8 @@ paths:
 
   /users:
     get:
+      security:
+        - jwt_auth: []  
       tags:
         - users
       summary: Retrieve a batch of users
@@ -560,6 +576,8 @@ paths:
 
   /users/{userId}:
     get:
+      security:
+        - jwt_auth: []   
       tags:
         - users
       summary: Retrieve user by ID
@@ -602,6 +620,8 @@ paths:
         '500':
           description: Failed to fetch
     patch:
+      security:
+        - jwt_auth: []   
       tags:
         - users
       summary: Partially update a user by ID
@@ -663,6 +683,8 @@ paths:
           description: Failed to update user
 
     put:
+      security:
+        - jwt_auth: []  
       tags:
         - users
       summary: Update a user by ID
@@ -725,6 +747,8 @@ paths:
           description: Failed to update user
 
     delete:
+      security:
+        - jwt_auth: []   
       tags:
         - users
       summary: Delete a user by ID
@@ -757,6 +781,8 @@ paths:
           description: Failed to delete user
   /me:
       get:
+        security:
+        - jwt_auth: []   
         tags:
           - me
         summary: Get your details
@@ -818,6 +844,8 @@ paths:
           '500':
             description: Failed to fetch
       patch:
+        security:
+        - jwt_auth: []   
         tags:
           - me
         summary: Update user details
@@ -846,6 +874,8 @@ paths:
           '500':
             description: Failed to fetch
       delete:
+        security:
+        - jwt_auth: []   
         tags:
           - me
         summary: Delete your account
