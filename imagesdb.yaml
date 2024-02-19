@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Images DB
-  description: |-
+  description: |
     This is the Images DB API based on the OpenAPI 3.1.0 specification.  
     Users are able to upload their images on the server and retrieve it.
   contact:
@@ -78,7 +78,7 @@ paths:
       tags:
         - auth
       summary: Sign in
-      description: Sign a with a username and password
+      description: Sign in with a username and password
       operationId: signIn
       requestBody:
         description: Create a new user
@@ -118,11 +118,12 @@ paths:
                     type: string
                   links:
                       $ref: '#/components/schemas/HATEOASLinkArray'
-
         '400':
-          description: Such a user does not exist
+          description: Invalid input
         '401':
           description: Your password is incorrect
+        '404':
+          description: Such a user does not exist
         '500':
           description: Error during logging in
   /images:
@@ -178,7 +179,7 @@ paths:
         - images
       summary: Retrieve a batch of images
       description: Retrieve a batch of images with pagination and sorting
-      operationId: get_images
+      operationId: getImages
       parameters:
         - in: query
           name: limit
@@ -263,7 +264,7 @@ paths:
       tags:
         - images
       summary: Delete all your images
-      description: Delete all of the images the signed in user has uploaded
+      description: Delete all of the images the signed-in user has uploaded
       operationId: deleteImages
       responses:
         '200':
@@ -286,8 +287,6 @@ paths:
 
   /images/{imageId}:
     get:
-      security:
-        - jwt_auth: []   
       tags:
         - images
       summary: Retrieve image by ID
@@ -325,8 +324,6 @@ paths:
         '500':
           description: Failed to fetch image
     delete:
-      security:
-        - jwt_auth: []   
       tags:
         - images
       summary: Delete image by ID
@@ -360,9 +357,7 @@ paths:
           description: Image not found
         '500':
           description: Failed to delete the image
-    patch:
-      security:
-        - jwt_auth: []   
+    patch: 
       tags:
         - images
       summary: Partially update image
@@ -398,13 +393,13 @@ paths:
                     type: string
                 isFlagged:
                   type: boolean
-                destroyTime:
+                createdAt:
                   type: string
                   format: date-time
                 updatedAt:
                   type: string
                   format: date-time
-                createdAt:
+                destroyTime:
                   type: string
                   format: date-time
       responses:
@@ -424,7 +419,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Unauthorized to update
+          description: Unauthorized to update this image
         '404':
           description: Image not found
         '500':
@@ -435,7 +430,7 @@ paths:
       tags:
         - images
       summary: Update an image
-      description: Update an image by its ID
+      description: Completely update an image by its ID
       operationId: updateImage
       parameters:
         - in: path
@@ -467,12 +462,15 @@ paths:
                     type: string
                 isFlagged:
                   type: boolean
-                destroyTime:
-                  type: string
-                updatedAt:
-                  type: string
                 createdAt:
                   type: string
+                  format: date-time
+                updatedAt:
+                  type: string
+                  format: date-time
+                destroyTime:
+                  type: string
+                  format: date-time
       responses:
         '200':
           description: Successful operation
@@ -575,9 +573,7 @@ paths:
           description: Failed to fetch users
 
   /users/{userId}:
-    get:
-      security:
-        - jwt_auth: []   
+    get:   
       tags:
         - users
       summary: Retrieve user by ID
@@ -620,8 +616,6 @@ paths:
         '500':
           description: Failed to fetch
     patch:
-      security:
-        - jwt_auth: []   
       tags:
         - users
       summary: Partially update a user by ID
@@ -747,8 +741,6 @@ paths:
           description: Failed to update user
 
     delete:
-      security:
-        - jwt_auth: []   
       tags:
         - users
       summary: Delete a user by ID
@@ -781,8 +773,6 @@ paths:
           description: Failed to delete user
   /me:
       get:
-        security:
-        - jwt_auth: []   
         tags:
           - me
         summary: Get your details
@@ -844,13 +834,23 @@ paths:
           '500':
             description: Failed to fetch
       patch:
-        security:
-        - jwt_auth: []   
         tags:
           - me
         summary: Update user details
-        description: The user can change details of their account like their  username and password
+        description: |
+          Update the account details of the currently signed-in user i.e. their username and password. Ensure to provide either a new username or password in the request body.
         operationId: updateUserDetails
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userName:
+                    type: string
+                  password:
+                    type: string
         responses:
           '200':
             description: Successful operation
@@ -874,8 +874,6 @@ paths:
           '500':
             description: Failed to fetch
       delete:
-        security:
-        - jwt_auth: []   
         tags:
           - me
         summary: Delete your account
@@ -909,21 +907,23 @@ components:
         userName:
           type: string
           examples: [thomas]
-        password:
-          type: string
-          examples: [$2b$15$K8QGnd1A7.A7.p661qLi/.giGjGxueAFx4quondR./BMjQHwA2aau]
         isAdmin:
           type: boolean
           examples: [false]
         createdAt:
           type: string
           format: date-time
+          examples: [2024-01-01 05:30:00+05:30]
         updatedAt:
           type: string
           format: date-time
+          examples: [2024-01-01 05:30:00+05:30]
         destroyTime:
           type: string
           format: date-time
+      required:
+        - id
+        - userName
     Image:
       type: object
       properties:
